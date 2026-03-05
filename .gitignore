@@ -1,0 +1,12 @@
+credentials.json
+token.json
+
+venv/
+env/
+.venv/
+
+__pycache__/
+*.py[cod]
+
+.DS_Store
+Thumbs.db
