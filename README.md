@@ -36,13 +36,19 @@ Este projeto foi construído para praticar o consumo de APIs, Threading e execu�
    ```bash
    git clone https://github.com/JacundaEntorpe/NOME_DO_REPOSITORIO.git
    ```
-2. Instale as dependências:
+2. Crie e ative um ambiente virtual:
+    ```bash
+    python -m venv venv
+    # No Windows: venv\Scripts\activate
+    # No Linux/Mac: source venv/bin/activate
+    ```
+3. Instale as dependências:
     ```bash
     pip install -r requirements.txt
     ```
-3. Crie suas credenciais na API do Google e baixe o arquivo credentials.json.
-4. Coloque o arquivo credentials.json na raiz do projeto.
-5. Adicione um arquivo de áudio chamado alarm_sound.mp3 e um icone.ico na pasta assets/.
+4. Crie suas credenciais na API do Google e baixe o arquivo credentials.json.
+5. Coloque o arquivo credentials.json na raiz do projeto.
+6. Adicione um arquivo de áudio chamado alarm_sound.mp3 e um icone.ico na pasta assets/.
 
 ## Uso
 
