@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import PhotoImage
 from PIL import Image, ImageTk
+from themes import TEMAS
+from config import ler_tema_atual
 import pygame
 import time
 import sys
@@ -20,12 +22,17 @@ def set_alarm(event_title):
     except Exception as e:
         print(f"Erro ao carregar o som: {e}")
 
-    COR_FUNDO = "#FAF3E0"
-    COR_TEXTO = "#5C4D42"
-    COR_DESTAQUE = "#D4A373"
-    COR_BOTAO = "#CCD5AE"
-    COR_BOTAO_HOVER = "#E9EDC9"
-    COR_FECHAR_HOVER = "#E07A5F"
+    nome_tema = ler_tema_atual()
+    
+    # Se der algum erro e o tema não existir, volta pro padrão
+    cores = TEMAS.get(nome_tema, TEMAS["Cozy Matcha"]) 
+
+    COR_FUNDO = cores["COR_FUNDO"]
+    COR_TEXTO = cores["COR_TEXTO"]
+    COR_DESTAQUE = cores["COR_DESTAQUE"]
+    COR_BOTAO = cores["COR_BOTAO"]
+    COR_BOTAO_HOVER = cores["COR_BOTAO_HOVER"]
+    COR_FECHAR_HOVER = cores["COR_FECHAR_HOVER"]
     FONTE_PADRAO = "Segoe UI"
 
     janela = tk.Tk()

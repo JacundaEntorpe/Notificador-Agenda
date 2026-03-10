@@ -3,13 +3,17 @@ import datetime
 from datetime import timezone
 from notifier import set_alarm
 from calendar_api import get_next_events
+import pystray
+from pystray import Menu, MenuItem
+from themes import TEMAS
+import config
 import threading
 from PIL import Image
 import pystray
 
-# Configuration constants
-PREVIOUS_WARNING_TIME = 1  # How many minutes BEFORE the event we want the notification
-CHECKING_INTERVAL = 60    # How often in SECONDS the program checks the calendar
+
+PREVIOUS_WARNING_TIME = 1
+CHECKING_INTERVAL = 60
 
 def checking_loop():
 
@@ -52,6 +56,9 @@ def exit_program(icon, item):
     print("Encerrando o Notificador de Agenda...")
     icon.stop()
 
+def testar_notif():
+    set_alarm("Teste de Notificação")
+
 if __name__ == "__main__":
     print("Iniciando o sistema...")
 
@@ -66,15 +73,39 @@ if __name__ == "__main__":
         print("Coloque uma imagem lá ou o ícone não vai aparecer.")
         exit()
 
-    menu = pystray.Menu(
-        pystray.MenuItem("Sair", exit_program)
+    tema_selecionado = config.ler_tema_atual()
+
+    def mudar_tema(icon, item):
+        """Função chamada quando o usuário clica em um tema na bandeja."""
+        global tema_selecionado
+        tema_selecionado = item.text
+        config.salvar_tema(tema_selecionado)
+        print(f"Tema alterado para: {tema_selecionado}")
+
+    def checar_tema_ativo(item):
+        """Diz ao pystray qual bolinha (radio button) deve ficar marcada."""
+        return tema_selecionado == item.text
+
+    # Cria uma lista de botões gerados dinamicamente a partir do themes.py
+    # O 'radio=True' cria aquela bolinha de seleção do lado do nome
+    itens_de_tema = []
+    for nome_do_tema in TEMAS.keys():
+        botao = MenuItem(nome_do_tema, mudar_tema, checked=checar_tema_ativo, radio=True)
+        itens_de_tema.append(botao)
+
+    submenu_temas = Menu(*itens_de_tema)
+
+    menu_principal = Menu(
+        MenuItem("Temas", submenu_temas),
+        MenuItem("Testar Notificação", testar_notif),
+        MenuItem("Sair", exit_program)
     )
 
     tray_icon = pystray.Icon(
         "NotificadorAgenda", 
         imagem_icone, 
-        "Notificador de Agenda",
-        menu
+        "Notificador de Agenda", 
+        menu_principal
     )
 
     print("Minimizando para a bandeja do sistema...")
